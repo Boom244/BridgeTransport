@@ -18,34 +18,33 @@ public class Main {
 		{
 			lineup.add(sc.nextInt());
 		}
+		
+		
 		//Here's what we're going to do
-		while (!lineup.isEmpty())
+		while (true) //for each car in the lineup
 		{
-			//While the current weight + the next car <= our max weight:
-			if ((currentWeight + lineup.peek()) <= maxWeight)
-			{
-				//keep adding cars to the queue:
-				bridge.add(lineup.peek());
-				currentWeight += lineup.poll();
-				maxCars++;
-				continue;
-			}
 			if (lineup.isEmpty())
 			{
 				break;
 			}
-			else if (((currentWeight - bridge.peek()) + lineup.peek()) > maxWeight)
+			//if the next car doesn't exceed the weight rating of the bridge, add it to the bridge
+			if (currentWeight + lineup.peek() <= maxWeight)
 			{
+				bridge.add(lineup.peek());
+				currentWeight += lineup.peek();
+				lineup.poll();
+				maxCars++;
+				//if this causes us to be at the max amount of cars for the bridge (4), remove one
+				//before going to the next loop
+				if (bridge.size() == 4)
+				{
+					currentWeight -= bridge.peek();
+					bridge.poll();
+				}
+				continue;
+			}else { //if the car does exceed the weight rating of the bridge even when the bridge has a free slot
 				break;
 			}
-			if (!bridge.isEmpty())
-			{
-				//Once we exit the loop and it's possible to load more cars and we've hit our max,
-				currentWeight -= bridge.peek(); //sub this from our current weight
-				bridge.poll(); //and remove the head of the bridge queue
-				//and keep doing this dance up until we've emptied the line-up
-			}
-			
 			
 		}
 		System.out.println(maxCars);
